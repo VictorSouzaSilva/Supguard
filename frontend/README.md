@@ -7,7 +7,7 @@ Antes de tudo, você precisa ter instalado:
 * Git (para clonar o repositório)
 * App Expo Go (no seu celular Android ou iOS)
 
-Ao baixar os códigos do projeto é necessário ir ao diretório corretor ''frontend'' e executar npm intall
+Ao baixar os códigos do projeto é necessário ir ao diretório correto ''frontend'' e executar: npm intall
 
 Para executar o código é possível usar no cd frontend: npx expo start
 Isso executará no terminal o código e gerará um QR Code que pode ser acessado usando o expo go do celular.
