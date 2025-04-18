@@ -34,3 +34,5 @@ assets/: Imagens e recursos estáticos
 components/: Telas do aplicativo
 
 App.js: Arquivo principal do app
+
+Package.json: Arquivo contendo as dependências do projeto
