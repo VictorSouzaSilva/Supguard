@@ -7,28 +7,28 @@ export default function TelaConfigPrincipal({ navigation }) {
   const [range, setRange] = useState(10);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backIcon}>
+    <SafeAreaView style={stylesTelaConfigPrincipal.container}>
+      <View style={stylesTelaConfigPrincipal.header}>
+        <TouchableOpacity style={stylesTelaConfigPrincipal.backIcon}>
           <Ionicons name="arrow-back" size={24} color="yellow" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>CONFIGURAÇÕES{"\n"}DO APLICATIVO</Text>
+        <Text style={stylesTelaConfigPrincipal.headerTitle}>CONFIGURAÇÕES{"\n"}DO APLICATIVO</Text>
       </View>
 
-      <View style={styles.content}>
+      <View style={stylesTelaConfigPrincipal.content}>
         <TouchableOpacity 
-          style={styles.option}
+          style={stylesTelaConfigPrincipal.option}
           onPress={() => navigation.navigate('TelaConfigNotificacoes')}
         >
-          <Text style={styles.optionText}>Notificações</Text>
-          <Text style={styles.arrow}>→</Text>
+          <Text style={stylesTelaConfigPrincipal.optionText}>Notificações</Text>
+          <Text style={stylesTelaConfigPrincipal.arrow}>→</Text>
         </TouchableOpacity>
 
-        <View style={styles.divider} />
+        <View style={stylesTelaConfigPrincipal.divider} />
 
-        <View style={styles.sliderContainer}>
-          <Text style={styles.optionText}>Raio de Alcance</Text>
-          <Text style={styles.rangeValue}>{range} Km</Text>
+        <View style={stylesTelaConfigPrincipal.sliderContainer}>
+          <Text style={stylesTelaConfigPrincipal.optionText}>Raio de Alcance</Text>
+          <Text style={stylesTelaConfigPrincipal.rangeValue}>{range} Km</Text>
         </View>
 
         <Slider
@@ -43,32 +43,32 @@ export default function TelaConfigPrincipal({ navigation }) {
           onSlidingComplete={(value) => setRange(value)}
         />
 
-        <View style={styles.divider} />
+        <View style={stylesTelaConfigPrincipal.divider} />
 
-        <TouchableOpacity style={styles.option}>
-          <Text style={styles.optionText}>Idioma</Text>
-          <Text style={styles.arrow}>→</Text>
+        <TouchableOpacity style={stylesTelaConfigPrincipal.option}>
+          <Text style={stylesTelaConfigPrincipal.optionText}>Idioma</Text>
+          <Text style={stylesTelaConfigPrincipal.arrow}>→</Text>
         </TouchableOpacity>
 
-        <View style={styles.divider} />
+        <View style={stylesTelaConfigPrincipal.divider} />
 
         <TouchableOpacity 
-          style={styles.option}
+          style={stylesTelaConfigPrincipal.option}
           onPress={() => navigation.navigate('TelaConfigPermissoes')}
         >
-          <Text style={styles.optionText}>Gerenciar permissões do aplicativo</Text>
-          <Text style={styles.arrow}>→</Text>
+          <Text style={stylesTelaConfigPrincipal.optionText}>Gerenciar permissões do aplicativo</Text>
+          <Text style={stylesTelaConfigPrincipal.arrow}>→</Text>
         </TouchableOpacity>
 
-        <View style={styles.divider} />
+        <View style={stylesTelaConfigPrincipal.divider} />
 
-        <TouchableOpacity style={styles.option}>
-          <Text style={styles.optionText}>Tema</Text>
-          <Text style={styles.arrow}>→</Text>
+        <TouchableOpacity style={stylesTelaConfigPrincipal.option}>
+          <Text style={stylesTelaConfigPrincipal.optionText}>Tema</Text>
+          <Text style={stylesTelaConfigPrincipal.arrow}>→</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.exitButton}>
-          <Text style={styles.exitButtonText}>SAIR</Text>
+        <TouchableOpacity style={stylesTelaConfigPrincipal.exitButton}>
+          <Text style={stylesTelaConfigPrincipal.exitButtonText}>SAIR</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
