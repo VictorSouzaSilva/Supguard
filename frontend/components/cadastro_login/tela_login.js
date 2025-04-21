@@ -54,7 +54,7 @@ export default function TelaLogin({ navigation }) {
 }
 
 
-const styles = StyleSheet.create({
+const stylesTelaLogin = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1e1a1a',
