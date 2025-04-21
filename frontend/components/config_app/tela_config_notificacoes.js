@@ -159,7 +159,7 @@ export default function TelaNotificacoes() {
   );
 }
 
-const styles = StyleSheet.create({
+const stylesTelaNotificacoes = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f1c40f',
