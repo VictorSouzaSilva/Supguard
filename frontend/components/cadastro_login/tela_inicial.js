@@ -53,7 +53,7 @@ export default function TelaInicial({ navigation }) {
 }
 
 
-const styles = StyleSheet.create({
+const stylesTelaInicial = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1e1a1a',
