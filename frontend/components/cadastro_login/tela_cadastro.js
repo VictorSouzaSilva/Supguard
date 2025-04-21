@@ -73,7 +73,7 @@ export default function CriarConta({ navigation }) {
 }
 
 
-const styles = StyleSheet.create({
+const stylesCriarConta = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1e1a1a',
