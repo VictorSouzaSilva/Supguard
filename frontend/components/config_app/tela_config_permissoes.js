@@ -77,7 +77,7 @@ const ItemPermissao = ({ titulo, valor, aoMudar }) => (
   </View>
 );
 
-const styles = StyleSheet.create({
+const stylesTelaConfigPermissoes = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f1c40f',
