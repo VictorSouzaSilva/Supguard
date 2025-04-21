@@ -75,7 +75,7 @@ export default function TelaConfigPrincipal({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+const stylesTelaConfigPrincipal = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f1c40f',
