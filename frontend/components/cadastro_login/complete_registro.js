@@ -6,26 +6,26 @@ export default function CompleteRegistro({ navigation }) {
   const [telefone, setTelefone] = useState('');
 
   return (
-    <View style={styles.container}>
-      <View style={styles.top}>
+    <View style={stylesCompleteRegistro.container}>
+      <View style={stylesCompleteRegistro.top}>
         <Image
           source={require('../../assets/logo.png')}
-          style={styles.logo}
+          style={stylesCompleteRegistro.logo}
         />
-        <Text style={styles.welcomeText}>
-          Seja bem-vindo, <Text style={styles.highlight}>complete seu registro.</Text>
+        <Text style={stylesCompleteRegistro.welcomeText}>
+          Seja bem-vindo, <Text style={stylesCompleteRegistro.highlight}>complete seu registro.</Text>
         </Text>
       </View>
-      <View style={styles.bottom}>
+      <View style={stylesCompleteRegistro.bottom}>
         <TextInput
-          style={styles.input}
+          style={stylesCompleteRegistro.input}
           placeholder="nome completo"
           placeholderTextColor="#666"
           value={nome}
           onChangeText={setNome}
         />
         <TextInput
-          style={styles.input}
+          style={stylesCompleteRegistro.input}
           placeholder="(00) 91234-5678"
           placeholderTextColor="#666"
           keyboardType="phone-pad"
@@ -34,10 +34,10 @@ export default function CompleteRegistro({ navigation }) {
         />
 
         <TouchableOpacity 
-          style={styles.button} 
+          style={stylesCompleteRegistro.button} 
           onPress={() => navigation.navigate('Dashboard')}
         >
-          <Text style={styles.buttonText}>Cadastrar informações</Text>
+          <Text style={stylesCompleteRegistro.buttonText}>Cadastrar informações</Text>
         </TouchableOpacity>
 
       </View>
