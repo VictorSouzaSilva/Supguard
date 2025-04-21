@@ -55,7 +55,7 @@ export default function Dashboard({ navigation }) {
   );
 }
 
-const darkMapStyle = [
+const darkMapStyleDashboard = [
     {
       "elementType": "geometry",
       "stylers": [{ "color": "#000000" }]
@@ -100,7 +100,7 @@ const darkMapStyle = [
   ];
   
 
-const styles = StyleSheet.create({
+const stylesDashboard = StyleSheet.create({
   container: {
     flex: 1,
   },
