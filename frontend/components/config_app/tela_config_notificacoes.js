@@ -55,19 +55,19 @@ export default function TelaNotificacoes() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backIcon}>
+    <SafeAreaView style={stylesTelaNotificacoes.container}>
+      <View style={stylesTelaNotificacoes.header}>
+        <TouchableOpacity style={stylesTelaNotificacoes.backIcon}>
           <Ionicons name="arrow-back" size={24} color="yellow" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>NOTIFICAÇÕES</Text>
       </View>
 
-      <ScrollView style={styles.content}>
-        <Text style={styles.sectionTitle}>Permissões</Text>
+      <ScrollView style={stylesTelaNotificacoes.content}>
+        <Text style={stylesTelaNotificacoes.sectionTitle}>Permissões</Text>
 
-        <View style={styles.switchRow}>
-          <Text style={styles.label}>Habilitar notificação</Text>
+        <View style={stylesTelaNotificacoes.switchRow}>
+          <Text style={stylesTelaNotificacoes.label}>Habilitar notificação</Text>
           <Switch
             value={notificacaoAtiva}
             onValueChange={() => setNotificacaoAtiva(!notificacaoAtiva)}
@@ -76,12 +76,12 @@ export default function TelaNotificacoes() {
           />
         </View>
 
-        <View style={styles.divider} />
+        <View style={stylesTelaNotificacoes.divider} />
 
-        <Text style={styles.sectionTitle}>Quando receber notificações?</Text>
+        <Text style={stylesTelaNotificacoes.sectionTitle}>Quando receber notificações?</Text>
 
-        <View style={styles.switchRow}>
-          <Text style={styles.label}>Matutino</Text>
+        <View style={stylesTelaNotificacoes.switchRow}>
+          <Text style={stylesTelaNotificacoes.label}>Matutino</Text>
           <Switch
             value={matutino}
             onValueChange={() => setMatutino(!matutino)}
@@ -90,8 +90,8 @@ export default function TelaNotificacoes() {
           />
         </View>
 
-        <View style={styles.switchRow}>
-          <Text style={styles.label}>Vespertino</Text>
+        <View style={stylesTelaNotificacoes.switchRow}>
+          <Text style={stylesTelaNotificacoes.label}>Vespertino</Text>
           <Switch
             value={vespertino}
             onValueChange={() => setVespertino(!vespertino)}
@@ -100,8 +100,8 @@ export default function TelaNotificacoes() {
           />
         </View>
 
-        <View style={styles.switchRow}>
-          <Text style={styles.label}>Noturno</Text>
+        <View style={stylesTelaNotificacoes.switchRow}>
+          <Text style={stylesTelaNotificacoes.label}>Noturno</Text>
           <Switch
             value={noturno}
             onValueChange={() => setNoturno(!noturno)}
@@ -110,16 +110,16 @@ export default function TelaNotificacoes() {
           />
         </View>
 
-        <View style={styles.divider} />
+        <View style={stylesTelaNotificacoes.divider} />
 
-        <Text style={styles.sectionTitle}>Quais tipos de notificação quer receber?</Text>
-        <Text style={styles.label}>Tipos de crime:</Text>
+        <Text style={stylesTelaNotificacoes.sectionTitle}>Quais tipos de notificação quer receber?</Text>
+        <Text style={stylesTelaNotificacoes.label}>Tipos de crime:</Text>
 
         <TouchableOpacity
-          style={styles.dropdownButton}
+          style={stylesTelaNotificacoes.dropdownButton}
           onPress={() => setModalVisible(true)}
         >
-          <Text style={styles.dropdownButtonText}>
+          <Text style={stylesTelaNotificacoes.dropdownButtonText}>
             {tiposSelecionados.length === 0
               ? 'Selecionar'
               : `${tiposSelecionados.length} tipo(s) selecionado(s)`}
@@ -127,9 +127,9 @@ export default function TelaNotificacoes() {
         </TouchableOpacity>
       </ScrollView>
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Selecione os tipos de crime:</Text>
+        <View style={stylesTelaNotificacoes.modalOverlay}>
+          <View style={stylesTelaNotificacoes.modalContent}>
+            <Text style={stylesTelaNotificacoes.modalTitle}>Selecione os tipos de crime:</Text>
             <ScrollView>
               {tiposCrime.map((tipo) => (
                 <TouchableOpacity
@@ -141,7 +141,7 @@ export default function TelaNotificacoes() {
                     status={tiposSelecionados.includes(tipo) ? 'checked' : 'unchecked'}
                     color="#000"
                   />
-                  <Text style={styles.checkboxLabel}>{tipo}</Text>
+                  <Text style={stylesTelaNotificacoes.checkboxLabel}>{tipo}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -150,7 +150,7 @@ export default function TelaNotificacoes() {
               onPress={() => setModalVisible(false)}
               style={styles.confirmButton}
             >
-              <Text style={styles.confirmButtonText}>Confirmar</Text>
+              <Text style={stylesTelaNotificacoes.confirmButtonText}>Confirmar</Text>
             </TouchableOpacity>
           </View>
         </View>
