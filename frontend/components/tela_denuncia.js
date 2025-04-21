@@ -9,22 +9,22 @@ export default function TelaDenuncia({ navigation }) {
   const [imagem, setImagem] = useState(null);
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.textoTopo}>
-          Denuncie com <Text style={styles.bold}>cuidado</Text>, se possível dê o <Text style={styles.bold}>máximo de informações!</Text>
+    <View style={stylesTelaDenuncia.container}>
+      <ScrollView contentContainerStyle={stylesTelaDenuncia.scrollContent}>
+        <Text style={stylesTelaDenuncia.textoTopo}>
+          Denuncie com <Text style={stylesTelaDenuncia.bold}>cuidado</Text>, se possível dê o <Text style={styles.bold}>máximo de informações!</Text>
         </Text>
-        <View style={styles.formContainer}>
+        <View style={stylesTelaDenuncia.formContainer}>
           <Image
             source={require('../assets/logo.png')}
-            style={styles.logo}
+            style={stylesTelaDenuncia.logo}
             resizeMode="contain"
           />
-          <View style={styles.inputWrapper}>
+          <View style={stylesTelaDenuncia.inputWrapper}>
             <Picker
               selectedValue={tipoIncidente}
               onValueChange={(itemValue) => setTipoIncidente(itemValue)}
-              style={styles.picker}
+              style={stylesTelaDenuncia.picker}
               dropdownIconColor="#000"
             >
               <Picker.Item label="(Obrigatório)" value="" color="#666" />
@@ -35,7 +35,7 @@ export default function TelaDenuncia({ navigation }) {
             </Picker>
           </View>
           <TextInput
-            style={styles.input}
+            style={stylesTelaDenuncia.input}
             placeholder="Detalhes (Opcional)"
             placeholderTextColor="#555"
             multiline
@@ -43,15 +43,15 @@ export default function TelaDenuncia({ navigation }) {
             value={detalhes}
             onChangeText={setDetalhes}
           />
-          <TouchableOpacity style={styles.inputIcon}>
-            <Text style={styles.placeholderText}>Imagem (Opcional)</Text>
+          <TouchableOpacity style={stylesTelaDenuncia.inputIcon}>
+            <Text style={stylesTelaDenuncia.placeholderText}>Imagem (Opcional)</Text>
             <Ionicons name="camera" size={20} color="#1e1a1a" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Enviar Denúncia</Text>
+          <TouchableOpacity style={stylesTelaDenuncia.button}>
+            <Text style={stylesTelaDenuncia.buttonText}>Enviar Denúncia</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.aviso}>
+        <Text style={stylesTelaDenuncia.aviso}>
           <Text style={{ fontWeight: 'bold' }}>Atenção:</Text> ao executar esta função, sua localização será usada para fins de registro e processamento conforme descrito em nossos Termos de Uso e Política de Privacidade.
         </Text>
       </ScrollView>
