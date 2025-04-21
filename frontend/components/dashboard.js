@@ -5,7 +5,7 @@ import { AntDesign, Feather, Entypo, FontAwesome } from '@expo/vector-icons';
 
 export default function Dashboard({ navigation }) {
   return (
-    <View style={styles.container}>
+    <View style={stylesDashboard.container}>
       <MapView
         style={StyleSheet.absoluteFillObject}
         initialRegion={{
@@ -18,12 +18,12 @@ export default function Dashboard({ navigation }) {
       >
       </MapView>
       <TouchableOpacity
-          style={styles.alertButton}
+          style={stylesDashboard.alertButton}
           onPress={() => navigation.navigate('TelaDenuncia')}
           >
           <Entypo name="warning" size={28} color="white" />
         </TouchableOpacity>
-      <View style={styles.searchContainer}>
+      <View style={stylesDashboard.searchContainer}>
         <TextInput
           placeholder="Pesquisar"
           placeholderTextColor="#555"
@@ -31,21 +31,21 @@ export default function Dashboard({ navigation }) {
         />
         <Feather name="search" size={20} color="#333" />
       </View>
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navButton}>
+      <View style={stylesDashboard.bottomNav}>
+        <TouchableOpacity style={stylesDashboard.navButton}>
           <FontAwesome name="user" size={20} color="black" />
-          <Text style={styles.navText}>Conta</Text>
+          <Text style={stylesDashboard.navText}>Conta</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}>
+        <TouchableOpacity style={stylesDashboard.navButton}>
           <AntDesign name="filetext1" size={20} color="black" />
-          <Text style={styles.navText}>Relatório</Text>
+          <Text style={stylesDashboard.navText}>Relatório</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}>
+        <TouchableOpacity style={stylesDashboard.navButton}>
           <Feather name="help-circle" size={20} color="black" />
-          <Text style={styles.navText}>Suporte</Text>
+          <Text style={stylesDashboard.navText}>Suporte</Text>
         </TouchableOpacity>
         <TouchableOpacity 
-          style={styles.navButton}
+          style={stylesDashboard.navButton}
           onPress={() => navigation.navigate('TelaConfigPrincipal')}
           >
           <Entypo name="cog" size={20} color="black" />
