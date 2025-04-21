@@ -16,18 +16,18 @@ export default function TelaConfigPermissoes() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={stylesTelaConfigPermissoes.container}>
       <StatusBar barStyle="light-content" backgroundColor="#1e1e1e" />
       
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backIcon}>
+      <View style={stylesTelaConfigPermissoes.header}>
+        <TouchableOpacity style={stylesTelaConfigPermissoes.backIcon}>
           <Ionicons name="arrow-back" size={24} color="yellow" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>GERENCIAR PERMISSÕES{"\n"}DO APLICATIVO</Text>
+        <Text style={stylesTelaConfigPermissoes.headerTitle}>GERENCIAR PERMISSÕES{"\n"}DO APLICATIVO</Text>
       </View>
 
-      <View style={styles.content}>
-        <Text style={styles.sectionTitle}>Acesso</Text>
+      <View style={stylesTelaConfigPermissoes.content}>
+        <Text style={stylesTelaConfigPermissoes.sectionTitle}>Acesso</Text>
 
         <ItemPermissao
           titulo="Localização"
@@ -64,8 +64,8 @@ export default function TelaConfigPermissoes() {
 }
 
 const ItemPermissao = ({ titulo, valor, aoMudar }) => (
-  <View style={styles.permissaoItem}>
-    <Text style={styles.permissaoTexto}>{titulo}</Text>
+  <View style={stylesTelaConfigPermissoes.permissaoItem}>
+    <Text style={stylesTelaConfigPermissoes.permissaoTexto}>{titulo}</Text>
     <Switch
       trackColor={{ false: '#333', true: '#000' }}
       thumbColor={valor ? '#f1c40f' : '#ccc'}
@@ -73,7 +73,7 @@ const ItemPermissao = ({ titulo, valor, aoMudar }) => (
       onValueChange={aoMudar}
       value={valor}
     />
-    <View style={styles.divider} />
+    <View style={stylesTelaConfigPermissoes.divider} />
   </View>
 );
 
