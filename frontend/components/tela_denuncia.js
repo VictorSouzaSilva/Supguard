@@ -59,7 +59,7 @@ export default function TelaDenuncia({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+const stylesTelaDenuncia = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1e1a1a',
