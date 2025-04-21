@@ -45,7 +45,7 @@ export default function CompleteRegistro({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+const stylesCompleteRegistro = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1e1a1a',
