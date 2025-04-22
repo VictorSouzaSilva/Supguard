@@ -6,20 +6,20 @@ export default function TelaLogin({ navigation }) {
   const [password, setPassword] = useState('');
 
   return (
-    <View style={styles.container}>
-      <View style={styles.top}>
+    <View style={stylesTelaLogin.container}>
+      <View style={stylesTelaLogin.top}>
         <Image
           source={require('../../assets/logo.png')}
-          style={styles.logo}
+          style={stylesTelaLogin.logo}
           resizeMode="contain"
         />
-        <Text style={styles.title}>
-          Bem-vindo de volta, faça seu <Text style={styles.highlight}>log in.</Text>
+        <Text style={stylesTelaLogin.title}>
+          Bem-vindo de volta, faça seu <Text style={stylesTelaLogin.highlight}>log in.</Text>
         </Text>
       </View>
-      <View style={styles.bottom}>
+      <View style={stylesTelaLogin.bottom}>
         <TextInput
-          style={styles.input}
+          style={stylesTelaLogin.input}
           placeholder="exemplo@email.com / (00) 91234-5678"
           placeholderTextColor="#666"
           onChangeText={setEmailOrPhone}
@@ -27,7 +27,7 @@ export default function TelaLogin({ navigation }) {
         />
 
         <TextInput
-          style={styles.input}
+          style={stylesTelaLogin.input}
           placeholder="***************"
           placeholderTextColor="#666"
           secureTextEntry
@@ -36,17 +36,17 @@ export default function TelaLogin({ navigation }) {
         />
 
         <TouchableOpacity>
-          <Text style={styles.forgot}>Esqueceu sua senha?</Text>
+          <Text style={stylesTelaLogin.forgot}>Esqueceu sua senha?</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
-          style={styles.button} 
+          style={stylesTelaLogin.button} 
           onPress={() => navigation.navigate('Dashboard')}
         >
-          <Text style={styles.buttonText}>Log in</Text>
+          <Text style={stylesTelaLogin.buttonText}>Log in</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('TelaInicial')}>
-          <Text style={styles.buttonText}>Voltar para a tela inicial</Text>
+          <Text style={stylesTelaLogin.buttonText}>Voltar para a tela inicial</Text>
         </TouchableOpacity>
       </View>
     </View>
