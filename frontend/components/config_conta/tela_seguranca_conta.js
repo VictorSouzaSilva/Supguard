@@ -19,72 +19,72 @@ export default function TelaSegurancaConta({ navigation }) {
   const [numeroRecuperacao, setNumeroRecuperacao] = useState('');
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={stylesTelaSegurancaConta.container}>
       {/* Cabeçalho */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backIcon} onPress={() => navigation.goBack()}>
+      <View style={stylesTelaSegurancaConta.header}>
+        <TouchableOpacity style={stylesTelaSegurancaConta.backIcon} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="yellow" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>SEGURANÇA{"\n"}DA CONTA</Text>
+        <Text style={stylesTelaSegurancaConta.headerTitle}>SEGURANÇA{"\n"}DA CONTA</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView contentContainerStyle={stylesTelaSegurancaConta.content}>
         {/* Seção: Trocar Senha */}
-        <Text style={styles.sectionTitle}>Trocar senha</Text>
+        <Text style={stylesTelaSegurancaConta.sectionTitle}>Trocar senha</Text>
 
         <TextInput
-          style={styles.input}
+          style={stylesTelaSegurancaConta.input}
           placeholder="Senha Atual:"
           secureTextEntry
           value={senhaAtual}
           onChangeText={setSenhaAtual}
         />
         <TextInput
-          style={styles.input}
+          style={stylesTelaSegurancaConta.input}
           placeholder="Nova Senha:"
           secureTextEntry
           value={novaSenha}
           onChangeText={setNovaSenha}
         />
         <TextInput
-          style={styles.input}
+          style={stylesTelaSegurancaConta.input}
           placeholder="Confirmar Nova Senha:"
           secureTextEntry
           value={confirmarSenha}
           onChangeText={setConfirmarSenha}
         />
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Salvar Alterações</Text>
+        <TouchableOpacity style={stylesTelaSegurancaConta.button}>
+          <Text style={stylesTelaSegurancaConta.buttonText}>Salvar Alterações</Text>
         </TouchableOpacity>
 
         {/* Seção: Dados de Recuperação */}
         <Text style={[styles.sectionTitle, { marginTop: 30 }]}>Dados de Recuperação</Text>
 
         <TextInput
-          style={styles.input}
+          style={stylesTelaSegurancaConta.input}
           placeholder="Email de Recuperação:"
           keyboardType="email-address"
           value={emailRecuperacao}
           onChangeText={setEmailRecuperacao}
         />
         <TextInput
-          style={styles.input}
+          style={stylesTelaSegurancaConta.input}
           placeholder="Número de Recuperação:"
           keyboardType="phone-pad"
           value={numeroRecuperacao}
           onChangeText={setNumeroRecuperacao}
         />
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Salvar Informações</Text>
+        <TouchableOpacity style={stylesTelaSegurancaConta.button}>
+          <Text style={stylesTelaSegurancaConta.buttonText}>Salvar Informações</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const stylesTelaSegurancaConta = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f1c40f',
