@@ -4,35 +4,35 @@ import { FontAwesome } from '@expo/vector-icons';
 
 export default function TelaInicial({ navigation }) {
   return (
-    <View style={styles.container}>
-      <View style={styles.top}>
+    <View style={stylesTelaInicial.container}>
+      <View style={stylesTelaInicial.top}>
         <Image
           source={require('../../assets/logo.png')}
-          style={styles.logo}
+          style={stylesTelaInicial.logo}
         />
-        <Text style={styles.welcomeText}>
-          Seja bem-vindo ao <Text style={styles.highlight}>SUPGUARD.</Text>
+        <Text style={stylesTelaInicial.welcomeText}>
+          Seja bem-vindo ao <Text style={stylesTelaInicial.highlight}>SUPGUARD.</Text>
         </Text>
       </View>
 
       {/* Bottom section */}
-      <View style={styles.bottom}>
+      <View style={stylesTelaInicial.bottom}>
         <TouchableOpacity 
-          style={styles.button} 
+          style={stylesTelaInicial.button} 
           onPress={() => navigation.navigate('CriarConta')}
         >
-          <Text style={styles.buttonText}>Cadastrar-se</Text>
+          <Text style={stylesTelaInicial.buttonText}>Cadastrar-se</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
-          style={styles.button} 
+          style={stylesTelaInicial.button} 
           onPress={() => navigation.navigate('TelaLogin')}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={stylesTelaInicial.buttonText}>Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.googleButton}
+          style={stylesTelaInicial.googleButton}
           onPress={() => navigation.navigate('CompleteRegistro')}
           >
           <FontAwesome name="google" size={24} color="#4285F4" />
@@ -40,7 +40,7 @@ export default function TelaInicial({ navigation }) {
 
 
         <TouchableOpacity>
-          <Text style={styles.terms}>
+          <Text style={stylesTelaInicial.terms}>
             <FontAwesome name="shield" size={12} color="#000" />{' '}
             <Text style={{ fontWeight: 'bold' }}>
               Termos de Uso e Política de Privacidade.
