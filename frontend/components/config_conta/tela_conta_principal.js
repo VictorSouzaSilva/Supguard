@@ -14,36 +14,36 @@ export default function TelaConfigConta({ navigation }) {
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={stylesTelaConfigConta.container}>
       {/* Cabeçalho */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backIcon} onPress={() => navigation.goBack()}>
+      <View style={stylesTelaConfigConta.header}>
+        <TouchableOpacity style={stylesTelaConfigConta.backIcon} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="yellow" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>CONFIGURAÇÕES{"\n"}DA CONTA</Text>
+        <Text style={stylesTelaConfigConta.headerTitle}>CONFIGURAÇÕES{"\n"}DA CONTA</Text>
       </View>
 
-      <View style={styles.content}>
+      <View style={stylesTelaConfigConta.content}>
         <TouchableOpacity 
-          style={styles.option}
+          style={stylesTelaConfigConta.option}
           onPress={() => navigation.navigate('TelaInformacoesPessoais')} >
-          <Text style={styles.optionText}>Atualizar informações pessoais</Text>
-          <Text style={styles.arrow}>→</Text>
+          <Text style={stylesTelaConfigConta.optionText}>Atualizar informações pessoais</Text>
+          <Text style={stylesTelaConfigConta.arrow}>→</Text>
         </TouchableOpacity>
 
-        <View style={styles.divider} />
+        <View style={stylesTelaConfigConta.divider} />
 
         <TouchableOpacity 
-          style={styles.option}
+          style={stylesTelaConfigConta.option}
           onPress={() => navigation.navigate('TelaSegurancaConta')} >
-          <Text style={styles.optionText}>Segurança da conta</Text>
-          <Text style={styles.arrow}>→</Text>
+          <Text style={stylesTelaConfigConta.optionText}>Segurança da conta</Text>
+          <Text style={stylesTelaConfigConta.arrow}>→</Text>
         </TouchableOpacity>
 
-        <View style={styles.divider} />
+        <View style={stylesTelaConfigConta.divider} />
 
-        <View style={styles.option}>
-          <Text style={styles.optionText}>Autenticação em duas etapas</Text>
+        <View style={stylesTelaConfigConta.option}>
+          <Text style={stylesTelaConfigConta.optionText}>Autenticação em duas etapas</Text>
           <Switch
             trackColor={{ false: '#333', true: '#000' }}
             thumbColor={isTwoFactorEnabled ? '#f1c40f' : '#ccc'}
@@ -53,23 +53,23 @@ export default function TelaConfigConta({ navigation }) {
         />
         </View>
 
-        <View style={styles.divider} />
+        <View style={stylesTelaConfigConta.divider} />
 
-        <TouchableOpacity style={styles.option}>
-          <Text style={styles.optionText}>Termos de uso e política de privacidade</Text>
-          <Text style={styles.arrow}>→</Text>
+        <TouchableOpacity style={stylesTelaConfigConta.option}>
+          <Text style={stylesTelaConfigConta.optionText}>Termos de uso e política de privacidade</Text>
+          <Text style={stylesTelaConfigConta.arrow}>→</Text>
         </TouchableOpacity>
 
         {/* Botão de sair */}
-        <TouchableOpacity style={styles.exitButton}>
-          <Text style={styles.exitButtonText}>SAIR</Text>
+        <TouchableOpacity style={stylesTelaConfigConta.exitButton}>
+          <Text style={stylesTelaConfigConta.exitButtonText}>SAIR</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const stylesTelaConfigConta = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#f1c40f',
