@@ -16,20 +16,20 @@ export default function TelaInformacoesPessoais({ navigation }) {
   const [telefone, setTelefone] = useState('');
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={stylesTelaInformacoesPessoais.container}>
       {/* Cabeçalho padronizado */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backIcon} onPress={() => navigation.goBack()}>
+      <View style={stylesTelaInformacoesPessoais.header}>
+        <TouchableOpacity style={stylesTelaInformacoesPessoais.backIcon} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="yellow" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>INFORMAÇÕES{"\n"}PESSOAIS</Text>
+        <Text style={stylesTelaInformacoesPessoais.headerTitle}>INFORMAÇÕES{"\n"}PESSOAIS</Text>
       </View>
 
-      <View style={styles.content}>
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Nome:</Text>
+      <View style={stylesTelaInformacoesPessoais.content}>
+        <View style={stylesTelaInformacoesPessoais.inputGroup}>
+          <Text style={stylesTelaInformacoesPessoais.label}>Nome:</Text>
           <TextInput
-            style={styles.input}
+            style={stylesTelaInformacoesPessoais.input}
             placeholder="Nome completo"
             placeholderTextColor="#7f7f7f"
             value={nome}
@@ -37,10 +37,10 @@ export default function TelaInformacoesPessoais({ navigation }) {
           />
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email:</Text>
+        <View style={stylesTelaInformacoesPessoais.inputGroup}>
+          <Text style={stylesTelaInformacoesPessoais.label}>Email:</Text>
           <TextInput
-            style={styles.input}
+            style={stylesTelaInformacoesPessoais.input}
             placeholder="email@exemplo.com"
             placeholderTextColor="#7f7f7f"
             value={email}
@@ -49,10 +49,10 @@ export default function TelaInformacoesPessoais({ navigation }) {
           />
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Telefone:</Text>
+        <View style={stylesTelaInformacoesPessoais.inputGroup}>
+          <Text style={stylesTelaInformacoesPessoais.label}>Telefone:</Text>
           <TextInput
-            style={styles.input}
+            style={stylesTelaInformacoesPessoais.input}
             placeholder="(00) 0000-0000"
             placeholderTextColor="#7f7f7f"
             value={telefone}
@@ -61,15 +61,15 @@ export default function TelaInformacoesPessoais({ navigation }) {
           />
         </View>
 
-        <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Salvar Alterações</Text>
+        <TouchableOpacity style={stylesTelaInformacoesPessoais.saveButton}>
+          <Text style={stylesTelaInformacoesPessoais.saveButtonText}>Salvar Alterações</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const stylesTelaInformacoesPessoais = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f1c40f',
