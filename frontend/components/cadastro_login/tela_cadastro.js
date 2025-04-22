@@ -16,34 +16,34 @@ export default function CriarConta({ navigation }) {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
-    <View style={styles.container}>
-      <View style={styles.top}>
+    <View style={stylesCriarConta.container}>
+      <View style={stylesCriarConta.top}>
         <Image
           source={require('../../assets/logo.png')}
-          style={styles.logo}
+          style={stylesCriarConta.logo}
           resizeMode="contain"
         />
-        <Text style={styles.title}>
-          Bem-vindo! Crie sua <Text style={styles.highlight}>conta</Text>
+        <Text style={stylesCriarConta.title}>
+          Bem-vindo! Crie sua <Text style={stylesCriarConta.highlight}>conta</Text>
         </Text>
       </View>
-      <ScrollView contentContainerStyle={styles.bottom} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={stylesCriarConta.bottom} keyboardShouldPersistTaps="handled">
         <TextInput
-          style={styles.input}
+          style={stylesCriarConta.input}
           placeholder="Nome completo"
           placeholderTextColor="#666"
           onChangeText={setName}
         />
 
         <TextInput
-          style={styles.input}
+          style={stylesCriarConta.input}
           placeholder="exemplo@email.com / (00) 91234-5678"
           placeholderTextColor="#666"
           onChangeText={setEmailOrPhone}
         />
 
         <TextInput
-          style={styles.input}
+          style={stylesCriarConta.input}
           secureTextEntry
           placeholder="Senha"
           placeholderTextColor="#666"
@@ -51,7 +51,7 @@ export default function CriarConta({ navigation }) {
         />
 
         <TextInput
-          style={styles.input}
+          style={stylesCriarConta.input}
           secureTextEntry
           placeholder="Confirmar senha"
           placeholderTextColor="#666"
@@ -59,13 +59,13 @@ export default function CriarConta({ navigation }) {
         />
 
         <TouchableOpacity 
-          style={styles.button} 
+          style={stylesCriarConta.button} 
           onPress={() => navigation.navigate('TelaLogin')}
         >
-          <Text style={styles.buttonText}>Cadastrar</Text>
+          <Text style={stylesCriarConta.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('TelaLogin')}>
-          <Text style={styles.buttonText}>Já tem uma conta? Faça login</Text>
+          <Text style={stylesCriarConta.buttonText}>Já tem uma conta? Faça login</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
