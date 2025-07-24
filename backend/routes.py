@@ -9,8 +9,7 @@ def register():
     nome = data.get('nome')
     email = data.get('email')
     senha = data.get('senha')
-
-    # Sem validação de campos obrigatórios ou de senha repetida
+    
     usuario = Usuario(nome=nome, email=email, senha=senha)
     db.session.add(usuario)
     db.session.commit()
