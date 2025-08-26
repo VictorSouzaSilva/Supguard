@@ -26,3 +26,6 @@ def login():
     if usuario and usuario.senha == senha:
         return jsonify({'message': 'Login OK'})
     return jsonify({'error': 'Falha no login'}), 401
+
+from supguard_incidentes import incidentes_bp
+app.register_blueprint(incidentes_bp, url_prefix='/api')
