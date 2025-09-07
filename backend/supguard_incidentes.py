@@ -1,11 +1,8 @@
-from flask import Blueprint, request, jsonify, current_app
-from datetime import datetime, timezone, timedelta
+from flask import Blueprint, request, jsonify
 import math
-
-try:
-    from models_incidente import Incidente, db  # classe e db definidos no pack
-except Exception:
-    from models import Incidente, db  # se já existir no seu projeto
+from datetime import datetime, timezone, timedelta
+from .models_incidente import Incidente
+from . import db
 
 incidentes_bp = Blueprint('incidentes', __name__)
 
@@ -50,7 +47,7 @@ def criar_incidente():
         tipo=data['tipo'],
         descricao=data.get('descricao'),
         lat=lat, lon=lon,
-        status='validado',   # troque para 'pendente' se quiser moderação
+        status='validado',   
         fonte='usuario'
     )
     db.session.add(inc)
@@ -87,7 +84,6 @@ def listar_incidentes():
 
     if since_str:
         try:
-            # Aceita 'Z' no final
             since_dt = datetime.fromisoformat(since_str.replace('Z',''))
             q = q.filter(Incidente.created_at >= since_dt)
         except Exception:
