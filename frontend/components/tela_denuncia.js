@@ -28,8 +28,8 @@ export default function TelaDenuncia({ navigation }) {
               dropdownIconColor="#000"
             >
               <Picker.Item label="(Obrigatório)" value="" color="#666" />
-              <Picker.Item label="Assalto" value="Homicídio" />
-              <Picker.Item label="Vandalismo" value="Assalto" />
+              <Picker.Item label="Assalto" value="Assalto" />
+              <Picker.Item label="Homicídio" value="Homicídio" />
               <Picker.Item label="Agressão física" value="Agressão física" />
               <Picker.Item label="Estupro / abuso Sexual" value="Estupro / abuso Sexual" />
               <Picker.Item label="Vandalismo" value="Vandalismo" />
@@ -166,4 +166,5 @@ const stylesTelaDenuncia = StyleSheet.create({
     marginTop: 30,
     paddingHorizontal: 20,
   },
+
 });
