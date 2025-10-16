@@ -10,12 +10,15 @@ import {
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar } from 'react-native';
+import { Alert } from "react-native";
+import api from '../config/api';
 
 export default function CriarConta({ navigation }) {
-  const [name, setName] = useState('');
-  const [emailOrPhone, setEmailOrPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [confirmarsenha, setConfirmarSenha] = useState('');
 
   return (
     <View style={stylesCriarConta.container}>
@@ -39,7 +42,7 @@ export default function CriarConta({ navigation }) {
           style={stylesCriarConta.input}
           placeholder="Nome Completo"
           placeholderTextColor="#666"
-          onChangeText={setName}
+          onChangeText={setNome}
         />
 
         <TextInput
@@ -47,14 +50,14 @@ export default function CriarConta({ navigation }) {
           placeholder="Número de Telefone"
           keyboardType="phone-pad"
           placeholderTextColor="#666"
-          onChangeText={setEmailOrPhone}
+          onChangeText={setTelefone}
         />
         
         <TextInput
           style={stylesCriarConta.input}
           placeholder="E-mail"
           placeholderTextColor="#666"
-          onChangeText={setEmailOrPhone}
+          onChangeText={setEmail}
         />
 
         <TextInput
@@ -62,7 +65,7 @@ export default function CriarConta({ navigation }) {
           secureTextEntry
           placeholder="Senha"
           placeholderTextColor="#666"
-          onChangeText={setPassword}
+          onChangeText={setSenha}
         />
 
         <TextInput
@@ -70,12 +73,12 @@ export default function CriarConta({ navigation }) {
           secureTextEntry
           placeholder="Confirmar Senha"
           placeholderTextColor="#666"
-          onChangeText={setConfirmPassword}
+          onChangeText={setConfirmarSenha}
         />
 
         <TouchableOpacity 
           style={stylesCriarConta.button} 
-          onPress={() => navigation.navigate('TelaLogin')}
+          onPress={() => navigation.navigate('TelaLogin')} 
         >
           <Text style={stylesCriarConta.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
