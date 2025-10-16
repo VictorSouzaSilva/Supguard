@@ -2,11 +2,30 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
+import { Alert } from 'react-native';
+import api from './config/api';
 
 export default function TelaDenuncia({ navigation }) {
   const [tipoIncidente, setTipoIncidente] = useState('');
   const [detalhes, setDetalhes] = useState('');
   const [imagem, setImagem] = useState(null);
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+
+async function handleEnviarDenuncia(tipoIncidente, detalhes, imagem, latitude, longitude) {
+  try {
+    const payload = {
+      tipo: (tipoIncidente || '').toLowerCase(),
+      descricao: detalhes || '',
+      lat: parseFloat(latitude),
+      lon: parseFloat(longitude),
+    };
+    const data = await api.criarIncidente(payload);
+    Alert.alert('Denúncia', data.message || 'Incidente enviado');
+  } catch (e) {
+    Alert.alert('Erro ao enviar', e.message);
+  }
+}
 
   return (
     <View style={stylesTelaDenuncia.container}>
@@ -53,8 +72,13 @@ export default function TelaDenuncia({ navigation }) {
             <Text style={stylesTelaDenuncia.placeholderText}>Imagem (Opcional)</Text>
             <Ionicons name="camera" size={20} color="#1e1a1a" />
           </TouchableOpacity>
-          <TouchableOpacity style={stylesTelaDenuncia.button}>
+          <TouchableOpacity style={stylesTelaDenuncia.button}
+           onPress={() => navigation.navigate('Dashboard')}
+          >
             <Text style={stylesTelaDenuncia.buttonText}>Enviar Denúncia</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => handleEnviarDenuncia(tipoIncidente, detalhes, imagem, latitude, longitude)}>
           </TouchableOpacity>
         </View>
         <Text style={stylesTelaDenuncia.aviso}>
@@ -166,5 +190,4 @@ const stylesTelaDenuncia = StyleSheet.create({
     marginTop: 30,
     paddingHorizontal: 20,
   },
-
 });
