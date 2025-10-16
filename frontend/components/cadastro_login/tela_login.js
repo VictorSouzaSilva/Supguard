@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar } from 'react-native';
+import api from '../config/api';
 
 export default function TelaLogin({ navigation }) {
   const [emailOrPhone, setEmailOrPhone] = useState('');
