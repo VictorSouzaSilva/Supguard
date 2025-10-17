@@ -18,7 +18,16 @@ export default function CriarConta({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [telefone, setTelefone] = useState('');
-  const [confirmarsenha, setConfirmarSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
+
+  async function handleCadastroSubmit(nome, email, senha, confirmarSenha, telefone) {
+  try {
+    const data = await api.register({ nome, email, senha, confirmarSenha, telefone });
+    Alert.alert('Cadastro', data.message || 'Usuário cadastrado');
+  } catch (e) {
+    Alert.alert('Erro no cadastro', e.message);
+  }
+}
 
   return (
     <View style={stylesCriarConta.container}>
@@ -43,6 +52,7 @@ export default function CriarConta({ navigation }) {
           placeholder="Nome Completo"
           placeholderTextColor="#666"
           onChangeText={setNome}
+          value = {nome}
         />
 
         <TextInput
@@ -51,6 +61,7 @@ export default function CriarConta({ navigation }) {
           keyboardType="phone-pad"
           placeholderTextColor="#666"
           onChangeText={setTelefone}
+          value = {telefone}
         />
         
         <TextInput
@@ -58,6 +69,7 @@ export default function CriarConta({ navigation }) {
           placeholder="E-mail"
           placeholderTextColor="#666"
           onChangeText={setEmail}
+          value = {email}
         />
 
         <TextInput
@@ -66,6 +78,7 @@ export default function CriarConta({ navigation }) {
           placeholder="Senha"
           placeholderTextColor="#666"
           onChangeText={setSenha}
+          value = {senha}
         />
 
         <TextInput
@@ -74,6 +87,7 @@ export default function CriarConta({ navigation }) {
           placeholder="Confirmar Senha"
           placeholderTextColor="#666"
           onChangeText={setConfirmarSenha}
+          value = {confirmarSenha}
         />
 
         <TouchableOpacity 
@@ -82,6 +96,8 @@ export default function CriarConta({ navigation }) {
         >
           <Text style={stylesCriarConta.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress ={() => handleCadastroSubmit(nome, email, senha, confirmarSenha, telefone)}>
+          </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('TelaLogin')}>
           <Text style={stylesCriarConta.buttonText}>Já tem uma conta? Faça login</Text>
         </TouchableOpacity>
@@ -89,7 +105,6 @@ export default function CriarConta({ navigation }) {
     </View>
   );
 }
-
 
 const stylesCriarConta = StyleSheet.create({
   container: {
