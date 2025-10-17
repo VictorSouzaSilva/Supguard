@@ -8,6 +8,15 @@ export default function TelaLogin({ navigation }) {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
 
+  async function handleLoginSubmit(email, senha) {
+  try {
+   const data = await api.login({ email, senha });
+    Alert.alert('Login', data.message || 'Login efetuado');
+  } catch (e) {
+    Alert.alert('Erro no login', e.message);
+  }
+}
+
   return (
     <View style={stylesTelaLogin.container}>
       <View style={stylesTelaLogin.top}>
@@ -54,11 +63,12 @@ export default function TelaLogin({ navigation }) {
         >
           <Text style={stylesTelaLogin.buttonText}>Entrar</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleLoginSubmit(email, senha)}>
+          </TouchableOpacity>
       </View>
     </View>
   );
 }
-
 
 const stylesTelaLogin = StyleSheet.create({
   container: {
