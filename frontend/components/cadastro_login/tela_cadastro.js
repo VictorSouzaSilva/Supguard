@@ -25,7 +25,6 @@ export default function CriarConta({ navigation }) {
     const data = await api.register({ nome, email, senha, confirmarSenha, telefone });
     Alert.alert('Cadastro', data.message || 'Usuário cadastrado');
   } catch (e) {
-    Alert.alert('Erro no cadastro', e.message);
   }
 }
 
@@ -90,17 +89,32 @@ export default function CriarConta({ navigation }) {
           value = {confirmarSenha}
         />
 
-        <TouchableOpacity 
-          style={stylesCriarConta.button} 
-          onPress={() => navigation.navigate('TelaLogin')} 
-        >
-          <Text style={stylesCriarConta.buttonText}>Cadastrar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress ={() => handleCadastroSubmit(nome, email, senha, confirmarSenha, telefone)}>
-          </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('TelaLogin')}>
-          <Text style={stylesCriarConta.buttonText}>Já tem uma conta? Faça login</Text>
-        </TouchableOpacity>
+<TouchableOpacity
+  style={stylesCriarConta.button}
+  activeOpacity={0.7}
+  onPress={async () => {
+    try {
+      const resultado = await handleCadastroSubmit(
+        nome,
+        email,
+        senha,
+        confirmarSenha,
+        telefone
+      );
+
+      if (resultado !== false) {
+        navigation.navigate('TelaLogin'); 
+      }
+    } catch (e) {
+      console.warn('Falha ao criar conta:', e);
+    }
+  }}
+>
+  <Text style={stylesCriarConta.buttonText}>Criar conta</Text>
+</TouchableOpacity>
+<TouchableOpacity onPress={() => navigation.navigate('TelaLogin')}>
+  <Text style={stylesCriarConta.buttonText}>Já tem uma conta? Faça login</Text>
+</TouchableOpacity>
       </ScrollView>
     </View>
   );
