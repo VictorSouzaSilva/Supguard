@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert, StatusBar } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StatusBar } from 'react-native';
 import api from '../config/api';
 
 export default function TelaLogin({ navigation }) {
@@ -53,18 +52,26 @@ export default function TelaLogin({ navigation }) {
           value={password}
         />
 
-        <TouchableOpacity>
-          <Text style={stylesTelaLogin.forgot}>Esqueceu sua senha?</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={stylesTelaLogin.button} 
-          onPress={() => navigation.navigate('Dashboard')}
+        <TouchableOpacity
+          style={stylesTelaLogin.button}
+          activeOpacity={0.7}
+          onPress={async () => {
+            try {
+              const resultado = await handleLoginSubmit(
+                emailOrPhone,
+                password
+              );
+        
+              if (resultado !== false) {
+                navigation.navigate('Dashboard'); 
+              }
+            } catch (e) {
+              console.warn('Falha ao entrar na conta:', e);
+            }
+          }}
         >
           <Text style={stylesTelaLogin.buttonText}>Entrar</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleLoginSubmit(email, senha)}>
-          </TouchableOpacity>
       </View>
     </View>
   );
