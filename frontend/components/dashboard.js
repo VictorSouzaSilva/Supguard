@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { AntDesign, Feather, Entypo, FontAwesome } from '@expo/vector-icons';
+import { Feather, Entypo, FontAwesome } from '@expo/vector-icons';
 
 export default function Dashboard({ navigation }) {
   return (
@@ -37,7 +37,7 @@ export default function Dashboard({ navigation }) {
           <Text style={stylesDashboard.navText}>Conta</Text>
         </TouchableOpacity>
         <TouchableOpacity style={stylesDashboard.navButton}>
-          <AntDesign name="filetext1" size={20} color="black" />
+          <Feather name="file-text" size={20} color="black" />
           <Text style={stylesDashboard.navText}>Relatório</Text>
         </TouchableOpacity>
         <TouchableOpacity style={stylesDashboard.navButton}>
