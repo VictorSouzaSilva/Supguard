@@ -6,7 +6,8 @@ from . import db
 
 incidentes_bp = Blueprint('incidentes', __name__)
 
-TIPOS_PERMITIDOS = {"roubo","furto","vandalismo","agressao","outros"}
+TIPOS_PERMITIDOS = {"Assalto", "Homicídio", "Agressão física", "Estupro / abuso Sexual", "Vandalismo", 
+"Arrombamento", "Disparo de arma de fogo", "Acidente de trânsito", "Corrida Clandestina", "Tráfico"}
 
 def haversine_km(lat1, lon1, lat2, lon2):
     R = 6371.0
