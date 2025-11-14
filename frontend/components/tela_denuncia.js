@@ -13,17 +13,31 @@ export default function TelaDenuncia({ navigation }) {
   const [longitude, setLongitude] = useState('');
 
 async function handleEnviarDenuncia(tipoIncidente, detalhes, imagem, latitude, longitude) {
+  if (!tipoIncidente) {
+    Alert.alert('Erro', 'Por favor selecione um tipo de incidente.');
+    return false;
+  }
+
+  const latNum = parseFloat(latitude);
+  const lonNum = parseFloat(longitude);
+  if (!isFinite(latNum) || !isFinite(lonNum)) {
+    Alert.alert('Erro', 'Por favor informe latitude e longitude válidas.');
+    return false;
+  }
+
   try {
     const payload = {
-      tipo: (tipoIncidente || '').toLowerCase(),
+      tipo: tipoIncidente,
       descricao: detalhes || '',
-      lat: parseFloat(latitude),
-      lon: parseFloat(longitude),
+      lat: latNum,
+      lon: lonNum,
     };
     const data = await api.criarIncidente(payload);
     Alert.alert('Denúncia', data.message || 'Incidente enviado');
+    return true;
   } catch (e) {
     Alert.alert('Erro ao enviar', e.message);
+    return false;
   }
 }
 
@@ -68,18 +82,49 @@ async function handleEnviarDenuncia(tipoIncidente, detalhes, imagem, latitude, l
             value={detalhes}
             onChangeText={setDetalhes}
           />
+          <TextInput
+            style={stylesTelaDenuncia.input}
+            placeholder="Latitude (ex: -16.3285)"
+            placeholderTextColor="#555"
+            keyboardType="numeric"
+            value={latitude}
+            onChangeText={setLatitude}
+          />
+          <TextInput
+            style={stylesTelaDenuncia.input}
+            placeholder="Longitude (ex: -48.9526)"
+            placeholderTextColor="#555"
+            keyboardType="numeric"
+            value={longitude}
+            onChangeText={setLongitude}
+          />
           <TouchableOpacity style={stylesTelaDenuncia.inputIcon}>
             <Text style={stylesTelaDenuncia.placeholderText}>Imagem (Opcional)</Text>
             <Ionicons name="camera" size={20} color="#1e1a1a" />
           </TouchableOpacity>
-          <TouchableOpacity style={stylesTelaDenuncia.button}
-           onPress={() => navigation.navigate('Dashboard')}
-          >
-            <Text style={stylesTelaDenuncia.buttonText}>Enviar Denúncia</Text>
-          </TouchableOpacity>
           <TouchableOpacity
-          onPress={() => handleEnviarDenuncia(tipoIncidente, detalhes, imagem, latitude, longitude)}>
-          </TouchableOpacity>
+                    style={stylesTelaDenuncia.button}
+                    activeOpacity={0.7}
+                    onPress={async () => {
+                      try {
+                        const resultado = await handleEnviarDenuncia(
+                          tipoIncidente,
+                          detalhes,
+                          imagem,
+                          latitude,
+                          longitude
+                        );
+                  
+                        if (resultado !== false) {
+                          navigation.navigate('Dashboard'); 
+                        }
+                      } catch (e) {
+                        console.warn('Falha ao fazer a denuncia:', e);
+                      }
+                    }}
+                  >
+                    <Text style={stylesTelaDenuncia.buttonText}>Enviar Denúncia</Text>
+                  </TouchableOpacity>
         </View>
         <Text style={stylesTelaDenuncia.aviso}>
           <Text style={{ fontWeight: 'bold' }}>Atenção:</Text> ao executar esta função, sua localização será usada para fins de registro e processamento conforme descrito em nossos Termos de Uso e Política de Privacidade.
