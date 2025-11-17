@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
-import MapView, { Marker, Heatmap, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Heatmap, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Feather, Entypo, FontAwesome } from '@expo/vector-icons';
-import api from './config/api';
+import api from './config/api';           
+import incidentesMock from '../incidentesMock'; 
 
 export default function Dashboard({ navigation }) {
   const mapRef = useRef(null);
@@ -10,13 +11,14 @@ export default function Dashboard({ navigation }) {
 
   const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
 
+  // Bounds para Anápolis (aprox). Mantêm o mapa focado na cidade.
   const MIN_LAT = -16.6;
   const MAX_LAT = -16.1;
   const MIN_LON = -49.2;
   const MAX_LON = -48.8;
 
-  const MIN_DELTA = 0.005; 
-  const MAX_DELTA = 0.15;  
+  const MIN_DELTA = 0.005; // zoom mínimo
+  const MAX_DELTA = 0.15;  // zoom máximo (evita afastar demais)
 
   function handleRegionChangeComplete(region) {
     const lat = clamp(region.latitude, MIN_LAT, MAX_LAT);
@@ -43,17 +45,37 @@ export default function Dashboard({ navigation }) {
   useEffect(() => {
     async function carregarIncidentes() {
       try {
-        const incidentes = await api.listarIncidentes();
+        let incidentes = [...incidentesMock]; // Começa com o mock
 
-        const pontos = (incidentes || [])
+        // tenta buscar da API e combina com o mock
+        try {
+          const response = await api.listarIncidentes();
+          if (response && Array.isArray(response) && response.length > 0) {
+            // Combina API com mock (API primeiro para dados mais recentes)
+            incidentes = [...response, ...incidentesMock];
+            console.log('Incidentes carregados: API + Mock');
+          }
+        } catch (apiErr) {
+          console.log('Erro ao buscar da API, usando apenas mock:', apiErr.message);
+        }
+
+        const pontos = incidentes
           .map((inc) => {
             const latitude = inc.latitude ?? inc.lat ?? inc.latituded;
             const longitude = inc.longitude ?? inc.lon ?? inc.longituded;
 
+            // Peso baseado em tipo + status
             let weight = 1;
-            if (inc.status === 'validado') weight = 1.3;
-            if (inc.tipo === 'Homicídio' || inc.tipo === 'homicidio') weight = 2;
-            if (inc.tipo === 'Assalto' || inc.tipo === 'assalto') weight = 1.5;
+
+            if (inc.tipo === 'Homicídio') weight = 2.2;
+            else if (inc.tipo === 'Tráfico de drogas') weight = 1.8;
+            else if (inc.tipo === 'Assalto') weight = 1.6;
+            else if (inc.tipo === 'Agressão física') weight = 1.4;
+            else if (inc.tipo === 'Furto de veículo') weight = 1.3;
+            else if (inc.tipo === 'Furto') weight = 1.2;
+
+            if (inc.status === 'validado') weight *= 1.1;
+            if (inc.status === 'pendente') weight *= 0.9;
 
             return { latitude, longitude, weight };
           })
@@ -67,7 +89,31 @@ export default function Dashboard({ navigation }) {
 
         setHeatPoints(pontos);
       } catch (err) {
-        console.error('Erro ao carregar incidentes para o mapa de calor:', err);
+        console.error('Erro ao processar incidentes:', err);
+
+        // fallback: usa apenas o mock
+        const pontos = incidentesMock.map((inc) => ({
+          latitude: inc.latitude,
+          longitude: inc.longitude,
+          weight:
+            inc.tipo === 'Homicídio'
+              ? 2.2
+              : inc.tipo === 'Tráfico de drogas'
+              ? 1.8
+              : inc.tipo === 'Tráfico'
+              ? 1.8
+              : inc.tipo === 'Assalto'
+              ? 1.6
+              : inc.tipo === 'Agressão física'
+              ? 1.4
+              : inc.tipo === 'Furto de veículo'
+              ? 1.3
+              : inc.tipo === 'Furto'
+              ? 1.2
+              : 1,
+        }));
+
+        setHeatPoints(pontos);
       }
     }
 
@@ -89,6 +135,7 @@ export default function Dashboard({ navigation }) {
         customMapStyle={darkMapStyleDashboard}
         onRegionChangeComplete={handleRegionChangeComplete}
       >
+        {/* Mapa de calor baseado em API + mock */}
         {heatPoints.length > 0 && (
           <Heatmap
             points={heatPoints}
@@ -194,7 +241,7 @@ const stylesDashboard = StyleSheet.create({
   },
   alertButton: {
     position: 'absolute',
-    bottom: 100, 
+    bottom: 100,
     alignSelf: 'center',
     backgroundColor: '#696969',
     borderRadius: 25,
