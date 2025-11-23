@@ -5,12 +5,10 @@ import { Feather, Entypo, FontAwesome } from '@expo/vector-icons';
 import api from './config/api';           
 import incidentesMock from '../incidentesMock';
 
-// Categorias de severidade de incidentes
 const categoriasLeves = ["Vandalismo", "Corrida Clandestina"];
 const categoriasMedias = ["Agressão física", "Acidente de trânsito", "Arrombamento"];
 const categoriasGraves = ["Assalto", "Homicídio", "Estupro / abuso Sexual", "Disparo de arma de fogo", "Tráfico"];
 
-// Ruas e bairros de Anápolis (principais)
 const ruasAnapolis = [
   "Avenida Brasil",
   "Avenida Getúlio Vargas",
@@ -42,15 +40,13 @@ const bairrosAnapolis = [
   "Goiás Velho",
 ];
 
-// Calcula a intensidade do incidente baseado na categoria
 function getIntensidade(tipo) {
-  if (categoriasLeves.includes(tipo)) return 0.5;     // amarelo
-  if (categoriasMedias.includes(tipo)) return 1.0;     // laranja
-  if (categoriasGraves.includes(tipo)) return 2.0;     // vermelho
+  if (categoriasLeves.includes(tipo)) return 0.5;     
+  if (categoriasMedias.includes(tipo)) return 1.0;    
+  if (categoriasGraves.includes(tipo)) return 2.0;    
   return 1.0;
 }
 
-// Converte incidentes para pontos do mapa de calor
 function getHeatmapPoints(incidentes) {
   return incidentes
     .map((item) => {
@@ -95,16 +91,14 @@ export default function Dashboard({ navigation }) {
 
   const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
 
-  // Bounds para Anápolis (aprox). Mantêm o mapa focado na cidade.
   const MIN_LAT = -16.6;
   const MAX_LAT = -16.1;
   const MIN_LON = -49.2;
   const MAX_LON = -48.8;
 
-  const MIN_DELTA = 0.005; // zoom mínimo
-  const MAX_DELTA = 0.15;  // zoom máximo (evita afastar demais)
+  const MIN_DELTA = 0.005; 
+  const MAX_DELTA = 0.15;  
 
-  // Gera sugestões de busca
   const handleSearchChange = (text) => {
     setSearchText(text);
     
@@ -118,7 +112,6 @@ export default function Dashboard({ navigation }) {
     const lowerText = text.toLowerCase();
     const suggestions = [];
 
-    // Buscar tipos de incidentes
     const tiposUnicos = [...new Set(incidentes.map(inc => inc.tipo))];
     tiposUnicos.forEach(tipo => {
       if (tipo.toLowerCase().includes(lowerText)) {
@@ -126,14 +119,12 @@ export default function Dashboard({ navigation }) {
       }
     });
 
-    // Buscar ruas
     ruasAnapolis.forEach(rua => {
       if (rua.toLowerCase().includes(lowerText)) {
         suggestions.push({ type: 'rua', label: rua, value: rua });
       }
     });
 
-    // Buscar bairros
     bairrosAnapolis.forEach(bairro => {
       if (bairro.toLowerCase().includes(lowerText)) {
         suggestions.push({ type: 'bairro', label: bairro, value: bairro });
@@ -144,14 +135,11 @@ export default function Dashboard({ navigation }) {
     setShowSuggestions(suggestions.length > 0);
   };
 
-  // Filtra incidentes por tipo selecionado
   const handleSuggestionPress = (suggestion) => {
     const filtered = incidentes.filter(inc => {
       if (suggestion.type === 'tipo') {
         return inc.tipo === suggestion.value;
       }
-      // Para rua e bairro, seria necessário ter esses dados nos incidentes
-      // Por enquanto, filtramos por tipo ou apenas fechamos
       return true;
     });
 
@@ -159,7 +147,6 @@ export default function Dashboard({ navigation }) {
     setSearchText(suggestion.label);
     setShowSuggestions(false);
 
-    // Se há incidentes filtrados, centraliza no primeiro
     if (filtered.length > 0) {
       const first = filtered[0];
       mapRef.current?.animateToRegion(
@@ -199,14 +186,12 @@ export default function Dashboard({ navigation }) {
   useEffect(() => {
     async function carregarIncidentes() {
       try {
-        let incidentesList = [...incidentesMock]; // Começa com o mock
+        let incidentesList = [...incidentesMock]; 
         let usouAPI = false;
 
-        // tenta buscar da API e combina com o mock
         try {
           const response = await api.listarIncidentes();
           if (response && Array.isArray(response) && response.length > 0) {
-            // Combina API com mock (API primeiro para dados mais recentes)
             incidentesList = [...response, ...incidentesMock];
             usouAPI = true;
             console.log('✅ Incidentes carregados: API + Mock (' + response.length + ' da API)');
@@ -215,10 +200,8 @@ export default function Dashboard({ navigation }) {
           console.log('⚠️ API indisponível, usando mock:', apiErr.message);
         }
 
-        // Debug: mostrar quantos itens entraram antes da deduplicação
         console.log('📥 Total recebidos (antes dedupe):', incidentesList.length);
 
-        // Remove duplicatas e gera IDs únicos (mantém o primeiro encontrado)
         const seenIds = new Set();
         const uniqueIncidentes = incidentesList.filter(inc => {
           const id = inc.id;
@@ -230,13 +213,11 @@ export default function Dashboard({ navigation }) {
           _uniqueKey: `${inc.id}_${idx}_${Math.random()}`
         }));
 
-        // Debug: mostrar quantos itens sobraram após a deduplicação
         console.log('📌 Total únicos (após dedupe):', uniqueIncidentes.length);
 
         const pontos = getHeatmapPoints(uniqueIncidentes);
         console.log('📍 Total de pontos no mapa:', pontos.length);
 
-        // separa por severidade para aplicar cores distintas
         const leves = pontos.filter((p) => categoriasLeves.includes((p.tipo || '').toString()));
         const medias = pontos.filter((p) => categoriasMedias.includes((p.tipo || '').toString()));
         const graves = pontos.filter((p) => categoriasGraves.includes((p.tipo || '').toString()));
@@ -247,7 +228,6 @@ export default function Dashboard({ navigation }) {
         setHeatGraves(graves);
       } catch (err) {
         console.error('❌ Erro ao processar incidentes:', err);
-        // fallback: usa apenas o mock
         const pontos = getHeatmapPoints(incidentesMock);
         console.log('📍 Usando fallback do mock:', pontos.length, 'pontos');
 
@@ -644,3 +624,4 @@ const stylesDashboard = StyleSheet.create({
     marginTop: 2,
   },
 });
+
