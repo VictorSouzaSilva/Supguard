@@ -13,3 +13,6 @@ class Incidente(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     status = db.Column(db.String(20), nullable=False, default="validado")
     fonte = db.Column(db.String(20), nullable=False, default="usuario")
+    
+def __repr__(self):
+    return f"<Incidente {self.id} {self.tipo}"
