@@ -13,6 +13,7 @@ export default function TelaDenuncia({ navigation }) {
   const [longitude, setLongitude] = useState('');
 
 async function handleEnviarDenuncia(tipoIncidente, detalhes, imagem, latitude, longitude) {
+  // Validações no cliente antes de enviar
   if (!tipoIncidente) {
     Alert.alert('Erro', 'Por favor selecione um tipo de incidente.');
     return false;
@@ -27,16 +28,20 @@ async function handleEnviarDenuncia(tipoIncidente, detalhes, imagem, latitude, l
 
   try {
     const payload = {
+      // enviar o valor exatamente como selecionado no Picker
       tipo: tipoIncidente,
       descricao: detalhes || '',
       lat: latNum,
       lon: lonNum,
     };
+    console.log('📤 Enviando denúncia:', payload);
     const data = await api.criarIncidente(payload);
-    Alert.alert('Denúncia', data.message || 'Incidente enviado');
+    console.log('✅ Denúncia enviada com sucesso:', data);
+    Alert.alert('Sucesso!', data.message || 'Incidente enviado com sucesso!');
     return true;
   } catch (e) {
-    Alert.alert('Erro ao enviar', e.message);
+    console.error('❌ Erro ao enviar denúncia:', e);
+    Alert.alert('Erro ao enviar', e.message || 'Falha na conexão com o servidor');
     return false;
   }
 }
