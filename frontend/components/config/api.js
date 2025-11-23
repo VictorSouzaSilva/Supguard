@@ -1,21 +1,42 @@
-const DEFAULT_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://132.465.89.100:5000';
+const DEFAULT_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://132.465.2.77:5000';
 const API_BASE = DEFAULT_BASE.replace(/\/$/, '');
 
 async function apiFetch(path, { method = 'GET', body, headers } = {}) {
   const url = `${API_BASE}${path.startsWith('/') ? path : '/'+path}`;
-  const opts = { method, headers: { 'Content-Type': 'application/json', ...(headers || {}) } };
+  const opts = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(headers || {}),
+    },
+    timeout: 10000, // 10 segundos de timeout
+  };
   if (body !== undefined) opts.body = JSON.stringify(body);
 
-  const res = await fetch(url, opts);
-  const text = await res.text();
-  let json; try { json = JSON.parse(text); } catch { json = { raw: text }; }
-  if (!res.ok) {
-    const err = new Error(json?.error || `HTTP ${res.status}`);
-    err.status = res.status;
-    err.payload = json;
-    throw err;
+  try {
+    const res = await fetch(url, opts);
+    const text = await res.text();
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch {
+      json = { raw: text };
+    }
+    if (!res.ok) {
+      const err = new Error(json?.error || `HTTP ${res.status}`);
+      err.status = res.status;
+      err.payload = json;
+      throw err;
+    }
+    return json;
+  } catch (error) {
+    console.error('🔴 Erro de conexão:', {
+      url,
+      error: error.message,
+      type: error.type || 'unknown',
+    });
+    throw error;
   }
-  return json;
 }
 
 export const api = {
