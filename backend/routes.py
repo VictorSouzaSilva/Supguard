@@ -34,13 +34,28 @@ def register():
 
 @api.route('/login', methods=['POST'])
 def login():
-    data = request.get_json() or {}
-    email = data.get('email')
-    senha = data.get('senha')
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
 
-    usuario = Usuario.query.filter_by(email=email).first()
-    if usuario and usuario.senha == senha:
+    # Aceita campos: 'email' (email), 'emailOrPhone' (email ou telefone) ou 'telefone'
+    senha = data.get('senha') or data.get('password')
+    email = data.get('email')
+    emailOrPhone = data.get('emailOrPhone') or data.get('email_or_phone') or data.get('identifier')
+
+    # Normaliza o identificador: se veio emailOrPhone, decide se é email ou telefone
+    usuario = None
+    if email:
+        usuario = Usuario.query.filter_by(email=email).first()
+    elif emailOrPhone:
+        v = (emailOrPhone or '').strip()
+        if '@' in v:
+            usuario = Usuario.query.filter_by(email=v).first()
+        else:
+            usuario = Usuario.query.filter_by(telefone=v).first()
+
+    # Se encontrou usuário e senha bate, retorna OK
+    if usuario and senha and usuario.senha == senha:
         return jsonify({'message': 'Login OK'})
+
     return jsonify({'error': 'Falha no login'}), 401
 
 @api.route('/health', methods=['GET'])
