@@ -14,6 +14,10 @@ import TelaConfigNotificacoes from './config_app/tela_config_notificacoes';
 import TelaContaPrincipal from './config_conta/tela_conta_principal';
 import TelaInformacoesPessoais from './config_conta/tela_informacoes_pessoais';
 import TelaSegurancaConta from './config_conta/tela_seguranca_conta';
+import TelaContaUsuario from './tela_conta_usuario';
+import TelaTermos from './config_conta/tela_termos_de_uso';
+import TelaRelatório from './tela_relatório';
+import TelaSuporte from './tela_suporte';
 
 const Stack = createStackNavigator();
 
@@ -36,9 +40,14 @@ export default function Navegacao() {
         <Stack.Screen name="TelaContaPrincipal" component={TelaContaPrincipal} />
         <Stack.Screen name="TelaInformacoesPessoais" component={TelaInformacoesPessoais} />
         <Stack.Screen name="TelaSegurancaConta" component={TelaSegurancaConta} />
+        <Stack.Screen name="TelaContaUsuario" component={TelaContaUsuario} />
+        <Stack.Screen name="TelaTermos" component={TelaTermos} />
+        <Stack.Screen name="TelaRelatório" component={TelaRelatório} />
+        <Stack.Screen name="TelaSuporte" component={TelaSuporte} />
 
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
 
