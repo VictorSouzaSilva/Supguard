@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
+from datetime import datetime
 from . import db
-from .models import Usuario
+from .models import Usuario, Contato
 
 api = Blueprint('api', __name__)
 
@@ -61,3 +62,22 @@ def login():
 @api.route('/health', methods=['GET'])
 def health():
     return jsonify({'status': 'ok'})
+
+@api.route('/contato', methods=['POST'])
+def criar_contato():
+    """Recebe mensagem de suporte/contato do usuário"""
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    
+    nome = (data.get('nome') or '').strip()
+    email = (data.get('email') or '').strip()
+    assunto = (data.get('assunto') or '').strip()
+    mensagem = (data.get('mensagem') or '').strip()
+    
+    if not nome or not email or not assunto or not mensagem:
+        return jsonify({'error': 'Preencha todos os campos obrigatórios'}), 400
+    
+    contato = Contato(nome=nome, email=email, assunto=assunto, mensagem=mensagem)
+    db.session.add(contato)
+    db.session.commit()
+    
+    return jsonify({'message': 'Mensagem recebida com sucesso', 'id': contato.id}), 201
