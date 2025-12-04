@@ -469,17 +469,18 @@ export default function Dashboard({ navigation }) {
 
       <View style={stylesDashboard.bottomNav}>
         <TouchableOpacity style={stylesDashboard.navButton}
-        onPress={() => navigation.navigate('TelaContaUsuario')}>
+          onPress={() => navigation.navigate('TelaContaUsuario')}
+        >
           <FontAwesome name="user" size={20} color="black" />
           <Text style={stylesDashboard.navText}>Conta</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={stylesDashboard.navButton}
-          onPress={() => navigation.navigate('TelaRelatório')}>
+        <TouchableOpacity style={stylesDashboard.navButton} 
+        onPress={() => navigation.navigate('TelaRelatório')}>
           <Feather name="file-text" size={20} color="black" />
           <Text style={stylesDashboard.navText}>Relatório</Text>
         </TouchableOpacity>
         <TouchableOpacity style={stylesDashboard.navButton}
-             onPress={() => navigation.navigate('TelaSuporte')}>
+        onPress={() => navigation.navigate('TelaSuporte')}>
           <Feather name="help-circle" size={20} color="black" />
           <Text style={stylesDashboard.navText}>Suporte</Text>
         </TouchableOpacity>
@@ -577,7 +578,7 @@ const stylesDashboard = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#f4c900',
     width: '100%',
-    paddingVertical: 10,
+    paddingVertical: 15,
     justifyContent: 'space-around',
     alignItems: 'center',
     borderTopLeftRadius: 20,
@@ -664,4 +665,3 @@ const stylesDashboard = StyleSheet.create({
     marginTop: 2,
   },
 });
-
