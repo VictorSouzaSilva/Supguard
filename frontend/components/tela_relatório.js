@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,83 +6,93 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import api from './config/api';
 
-const INCIDENTES_MOCK = [
-  {
-    id: 1,
-    tipo: 'Roubo',
-    bairro: 'Centro',
-    dataHora: '23 Abril 2024 às 18:20',
-    status: 'Verificado',
-    gravidade: 'Grave',
-    corTipo: '#ff3b30', // vermelho
-  },
-  {
-    id: 2,
-    tipo: 'Vandalismo',
-    bairro: 'Jundiaí',
-    dataHora: '23 Abril 2024 às 21:47',
-    status: 'Em análise',
-    gravidade: 'Médio',
-    corTipo: '#ff9500', // laranja
-  },
-  {
-    id: 3,
-    tipo: 'Assalto',
-    bairro: 'Vila Jaiara',
-    dataHora: '23 Abril 2024 às 11:12',
-    status: 'Resolvido',
-    gravidade: 'Grave',
-    corTipo: '#ff3b30',
-  },
-  {
-    id: 4,
-    tipo: 'Suspeita',
-    bairro: 'Boa Vista',
-    dataHora: '23 Abril 2024 às 19:47',
-    status: 'Em análise',
-    gravidade: 'Leve',
-    corTipo: '#ffaa00',
-  },
-  {
-    id: 5,
-    tipo: 'Furto',
-    bairro: 'Centro',
-    dataHora: '23 Abril 2024 às 10:37',
-    status: 'Verificado',
-    gravidade: 'Leve',
-    corTipo: '#ffcc00',
-  },
-  {
-    id: 6,
-    tipo: 'Vandalismo',
-    bairro: 'Jundiaí',
-    dataHora: '22 Abril 2024 às 22:10',
-    status: 'Verificado',
-    gravidade: 'Médio',
-    corTipo: '#ff9500',
-  },
-];
+// Categorias para mapeamento de cores e tipos
+const categoriasLeves = ["Vandalismo", "Corrida Clandestina"];
+const categoriasMedias = ["Agressão física", "Acidente de trânsito", "Arrombamento"];
+const categoriasGraves = ["Assalto", "Homicídio", "Estupro / abuso Sexual", "Disparo de arma de fogo", "Tráfico"];
+
+function getCorPorTipo(tipo) {
+  if (categoriasLeves.includes(tipo)) return '#FFEB3B'; // amarelo
+  if (categoriasMedias.includes(tipo)) return '#FF9800'; // laranja
+  if (categoriasGraves.includes(tipo)) return '#F44336'; // vermelho
+  return '#9E9E9E'; // cinza
+}
+
+function getGravidadePorTipo(tipo) {
+  if (categoriasLeves.includes(tipo)) return 'Leve';
+  if (categoriasMedias.includes(tipo)) return 'Médio';
+  if (categoriasGraves.includes(tipo)) return 'Grave';
+  return 'Desconhecida';
+}
 
 export default function MeusRelatoriosScreen({ navigation }) {
   const [tipoSelecionado, setTipoSelecionado] = useState('Todos os tipos');
   const [periodoSelecionado, setPeriodoSelecionado] = useState('Hoje');
+  const [incidentes, setIncidentes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const totalEnviados = INCIDENTES_MOCK.length;
-  const totalEsteMes = 12; // mock
-  const totalVerificados = INCIDENTES_MOCK.filter(
-    (i) => i.status === 'Verificado'
-  ).length;
-  const totalEmAnalise = INCIDENTES_MOCK.filter(
-    (i) => i.status === 'Em análise'
-  ).length;
+  // Carrega incidentes da API ao montar
+  useEffect(() => {
+    carregarIncidentes();
+  }, []);
+
+  const carregarIncidentes = async () => {
+    setLoading(true);
+    try {
+      const params = {};
+      
+      // Mapeia período para query
+      if (periodoSelecionado === 'Hoje') params.periodo = 'hoje';
+      else if (periodoSelecionado === 'Semana') params.periodo = 'semana';
+      else if (periodoSelecionado === 'Este Mês') params.periodo = 'mes';
+      
+      // Mapeia tipo de incidente
+      if (tipoSelecionado !== 'Todos os tipos') params.tipo = tipoSelecionado;
+      
+      const response = await api.listarIncidentes(params);
+      
+      // Normaliza dados com campos necessários
+      const dados = response.map((inc) => ({
+        ...inc,
+        dataHora: inc.created_at ? new Date(inc.created_at).toLocaleString('pt-BR') : 'Data desconhecida',
+        bairro: 'Anápolis', // Se houver bairro no backend, usar; senão usar padrão
+        corTipo: getCorPorTipo(inc.tipo),
+        gravidade: getGravidadePorTipo(inc.tipo),
+      }));
+      
+      setIncidentes(dados);
+      console.log('✅ Incidentes carregados:', dados.length);
+    } catch (err) {
+      console.error('❌ Erro ao carregar incidentes:', err);
+      Alert.alert('Erro', 'Falha ao carregar incidentes');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const incidentesFiltrados = useMemo(() => {
-    // aqui você pode aplicar filtros reais de tipo/ período
-    return INCIDENTES_MOCK;
-  }, [tipoSelecionado, periodoSelecionado]);
+    return incidentes;
+  }, [incidentes]);
+
+  const totalEnviados = incidentesFiltrados.length;
+  const totalVerificados = incidentesFiltrados.filter(
+    (i) => i.status === 'validado'
+  ).length;
+  const totalEmAnalise = incidentesFiltrados.filter(
+    (i) => i.status === 'em análise'
+  ).length;
+
+  const tiposDisponiveis = [
+    'Todos os tipos',
+    ...new Set(incidentes.map(inc => inc.tipo))
+  ];
+
+  const periodosDisponiveis = ['Hoje', 'Semana', 'Este Mês'];
 
   return (
     <View style={styles.container}>
@@ -111,13 +121,13 @@ export default function MeusRelatoriosScreen({ navigation }) {
 
           <View style={styles.summaryCard}>
             <Text style={styles.cardLabel}>Este Mês</Text>
-            <Text style={styles.cardNumber}>{totalEsteMes}</Text>
+            <Text style={styles.cardNumber}>{incidentesFiltrados.length}</Text>
           </View>
         </View>
 
         <View style={styles.cardsRow}>
           <View style={styles.summaryCard}>
-            <Text style={styles.cardLabel}>Verificados</Text>
+            <Text style={styles.cardLabel}>Validados</Text>
             <Text style={styles.cardNumber}>{totalVerificados}</Text>
           </View>
 
@@ -130,30 +140,62 @@ export default function MeusRelatoriosScreen({ navigation }) {
         {/* Filtros */}
         <View style={styles.filtersContainer}>
           <Text style={styles.filterLabel}>Tipo de Incidente</Text>
-          <TouchableOpacity
-            style={styles.select}
-            activeOpacity={0.8}
-            onPress={() => {
-              // aqui você pode abrir um modal / picker real
-            }}
-          >
-            <Text style={styles.selectText}>{tipoSelecionado}</Text>
-            <Ionicons name="chevron-down" size={18} color="#000" />
-          </TouchableOpacity>
+          <View style={styles.pickerRow}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {tiposDisponiveis.map((tipo) => (
+                <TouchableOpacity
+                  key={tipo}
+                  style={[
+                    styles.filterChip,
+                    tipoSelecionado === tipo && styles.filterChipActive,
+                  ]}
+                  onPress={() => setTipoSelecionado(tipo)}
+                >
+                  <Text
+                    style={[
+                      styles.filterChipText,
+                      tipoSelecionado === tipo && styles.filterChipTextActive,
+                    ]}
+                  >
+                    {tipo}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
 
           <Text style={[styles.filterLabel, { marginTop: 14 }]}>Período</Text>
-          <TouchableOpacity
-            style={styles.select}
-            activeOpacity={0.8}
-            onPress={() => {
-              // modal de período
-            }}
-          >
-            <Text style={styles.selectText}>{periodoSelecionado}</Text>
-            <Ionicons name="chevron-down" size={18} color="#000" />
-          </TouchableOpacity>
+          <View style={styles.pickerRow}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {periodosDisponiveis.map((periodo) => (
+                <TouchableOpacity
+                  key={periodo}
+                  style={[
+                    styles.filterChip,
+                    periodoSelecionado === periodo && styles.filterChipActive,
+                  ]}
+                  onPress={() => {
+                    setPeriodoSelecionado(periodo);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.filterChipText,
+                      periodoSelecionado === periodo && styles.filterChipTextActive,
+                    ]}
+                  >
+                    {periodo}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
 
-          <TouchableOpacity style={styles.filterButton} activeOpacity={0.9}>
+          <TouchableOpacity
+            style={styles.filterButton}
+            activeOpacity={0.9}
+            onPress={carregarIncidentes}
+          >
             <Ionicons name="funnel-outline" size={18} color="#ffc700" />
             <Text style={styles.filterButtonText}>Aplicar Filtros</Text>
           </TouchableOpacity>
@@ -168,63 +210,73 @@ export default function MeusRelatoriosScreen({ navigation }) {
         </View>
 
         {/* Lista de cards */}
-        {incidentesFiltrados.map((item) => (
-          <View key={item.id} style={styles.incidentCard}>
-            <View style={styles.incidentHeader}>
-              <View style={styles.incidentTitleRow}>
-                <View
-                  style={[
-                    styles.typeDot,
-                    {
-                      backgroundColor: item.corTipo,
-                    },
-                  ]}
-                />
-                <Text style={styles.incidentTitle}>{item.tipo}</Text>
-              </View>
-            </View>
-
-            {/* Local */}
-            <View style={styles.incidentInfoRow}>
-              <Ionicons
-                name="location-outline"
-                size={14}
-                color="#888"
-                style={styles.infoIcon}
-              />
-              <Text style={styles.incidentInfoText}>
-                {item.bairro} - Anápolis
-              </Text>
-            </View>
-
-            {/* Data */}
-            <View style={styles.incidentInfoRow}>
-              <Ionicons
-                name="calendar-outline"
-                size={14}
-                color="#888"
-                style={styles.infoIcon}
-              />
-              <Text style={styles.incidentInfoText}>{item.dataHora}</Text>
-            </View>
-
-            {/* Status + Gravidade */}
-            <View style={styles.incidentFooter}>
-              <View style={getStatusTagStyle(item.status)}>
-                <Text style={getStatusTextStyle(item.status)}>
-                  {item.status}
-                </Text>
-              </View>
-
-              <Text style={styles.gravityText}>
-                Gravidade:{' '}
-                <Text style={getGravityHighlightStyle(item.gravidade)}>
-                  {item.gravidade}
-                </Text>
-              </Text>
-            </View>
+        {loading ? (
+          <View style={{ padding: 20, alignItems: 'center' }}>
+            <Text>Carregando...</Text>
           </View>
-        ))}
+        ) : incidentesFiltrados.length === 0 ? (
+          <View style={{ padding: 20, alignItems: 'center' }}>
+            <Text>Nenhum incidente encontrado</Text>
+          </View>
+        ) : (
+          incidentesFiltrados.map((item) => (
+            <View key={item.id} style={styles.incidentCard}>
+              <View style={styles.incidentHeader}>
+                <View style={styles.incidentTitleRow}>
+                  <View
+                    style={[
+                      styles.typeDot,
+                      {
+                        backgroundColor: item.corTipo,
+                      },
+                    ]}
+                  />
+                  <Text style={styles.incidentTitle}>{item.tipo}</Text>
+                </View>
+              </View>
+
+              {/* Local */}
+              <View style={styles.incidentInfoRow}>
+                <Ionicons
+                  name="location-outline"
+                  size={14}
+                  color="#888"
+                  style={styles.infoIcon}
+                />
+                <Text style={styles.incidentInfoText}>
+                  {item.bairro} - Anápolis
+                </Text>
+              </View>
+
+              {/* Data */}
+              <View style={styles.incidentInfoRow}>
+                <Ionicons
+                  name="calendar-outline"
+                  size={14}
+                  color="#888"
+                  style={styles.infoIcon}
+                />
+                <Text style={styles.incidentInfoText}>{item.dataHora}</Text>
+              </View>
+
+              {/* Status + Gravidade */}
+              <View style={styles.incidentFooter}>
+                <View style={getStatusTagStyle(item.status)}>
+                  <Text style={getStatusTextStyle(item.status)}>
+                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                  </Text>
+                </View>
+
+                <Text style={styles.gravityText}>
+                  Gravidade:{' '}
+                  <Text style={getGravityHighlightStyle(item.gravidade)}>
+                    {item.gravidade}
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          ))
+        )}
 
         <View style={{ height: 32 }} />
       </ScrollView>
