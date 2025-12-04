@@ -7,8 +7,11 @@ import {
   ScrollView,
   TextInput,
   StatusBar,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import api from './config/api';
 
 const YELLOW = '#ffc700';
 const BLACK = '#000000';
@@ -59,11 +62,52 @@ export default function SuporteScreen({ navigation }) {
   const [assunto, setAssunto] = useState('Selecione o motivo');
   const [mensagem, setMensagem] = useState('');
   const [openFaqId, setOpenFaqId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  function handleEnviar() {
-    // aqui você integra com sua API / backend
-    console.log({ nome, email, assunto, mensagem });
-  }
+  const handleEnviar = async () => {
+    // Validação dos campos
+    if (!nome.trim()) {
+      Alert.alert('Erro', 'Por favor, preencha seu nome');
+      return;
+    }
+    if (!email.trim() || !email.includes('@')) {
+      Alert.alert('Erro', 'Por favor, preencha um e-mail válido');
+      return;
+    }
+    if (assunto === 'Selecione o motivo') {
+      Alert.alert('Erro', 'Por favor, selecione um assunto');
+      return;
+    }
+    if (!mensagem.trim()) {
+      Alert.alert('Erro', 'Por favor, digite sua mensagem');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await api.criarContato({
+        nome: nome.trim(),
+        email: email.trim(),
+        assunto,
+        mensagem: mensagem.trim(),
+      });
+
+      Alert.alert('Sucesso', 'Mensagem enviada com sucesso! Retornaremos em breve.');
+      
+      // Limpa o formulário
+      setNome('');
+      setEmail('');
+      setAssunto('Selecione o motivo');
+      setMensagem('');
+      
+      console.log('✅ Contato criado:', response);
+    } catch (err) {
+      console.error('❌ Erro ao enviar mensagem:', err);
+      Alert.alert('Erro', err.message || 'Falha ao enviar mensagem. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -149,9 +193,16 @@ export default function SuporteScreen({ navigation }) {
               style={styles.submitButton}
               activeOpacity={0.9}
               onPress={handleEnviar}
+              disabled={loading}
             >
-              <Ionicons name="paper-plane-outline" size={18} color="#000" />
-              <Text style={styles.submitButtonText}>Enviar Mensagem</Text>
+              {loading ? (
+                <ActivityIndicator size="small" color="#000" />
+              ) : (
+                <>
+                  <Ionicons name="paper-plane-outline" size={18} color="#000" />
+                  <Text style={styles.submitButtonText}>Enviar Mensagem</Text>
+                </>
+              )}
             </TouchableOpacity>
           </View>
         </View>
