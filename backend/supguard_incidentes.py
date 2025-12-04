@@ -51,15 +51,34 @@ def criar_incidente():
 def listar_incidentes():
   q = Incidente.query
   tipo = request.args.get('tipo')
+  status = request.args.get('status')
   since_str = request.args.get('since')
+  periodo = request.args.get('periodo')  # 'hoje', 'semana', 'mes'
+  
   if tipo:
     q = q.filter(Incidente.tipo == tipo)
+  if status:
+    q = q.filter(Incidente.status == status)
   if since_str:
     try:
       since_dt = datetime.fromisoformat(since_str.replace('Z',''))
       q = q.filter(Incidente.created_at >= since_dt)
     except Exception:
       return jsonify({'error': 'since inválido (use ISO8601)'}), 400
+  
+  # Filtro por período: hoje, últimos 7 dias, este mês
+  if periodo == 'hoje':
+    from datetime import timedelta
+    today = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+    q = q.filter(Incidente.created_at >= today)
+  elif periodo == 'semana':
+    from datetime import timedelta
+    week_ago = datetime.utcnow() - timedelta(days=7)
+    q = q.filter(Incidente.created_at >= week_ago)
+  elif periodo == 'mes':
+    from datetime import timedelta
+    month_ago = datetime.utcnow() - timedelta(days=30)
+    q = q.filter(Incidente.created_at >= month_ago)
 
   items = q.order_by(Incidente.created_at.desc()).limit(1000).all()
   out = [{
