@@ -1,4 +1,4 @@
-const DEFAULT_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://132.465.2.77:5000';
+const DEFAULT_BASE = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://192.168.1.66:5000';
 const API_BASE = DEFAULT_BASE.replace(/\/$/, '');
 
 async function apiFetch(path, { method = 'GET', body, headers } = {}) {
@@ -48,5 +48,6 @@ export const api = {
     const qs = new URLSearchParams(params).toString();
     return apiFetch('/api/incidentes' + (qs ? `?${qs}` : ''));
   },
+  criarContato: (payload) => apiFetch('/api/contato', { method: 'POST', body: payload }),
 };
 export default api;
