@@ -311,5 +311,3 @@ Isso permite que o frontend (aplicativo SupGuard ou outra interface web) consuma
 Depois disso, o backend do SupGuard estará disponível para ser consumido pelo frontend/mobile.
 
 ---
-
-Se quiser, na próxima mensagem eu posso **enxugar** esse texto para uma versão mais curta, própria para TCC, ou fazer uma versão em inglês também.
